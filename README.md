@@ -1,1 +1,0 @@
-Second Embedded Project, Group G19
