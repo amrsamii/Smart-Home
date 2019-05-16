@@ -1,11 +1,50 @@
-#include "motor2.h"
-#include "tm4c123gh6pm.h"
-#include "stdint.h"
-#include "port.h"
-#include "delay.h"
+#include "motor.h"
+
+
 
 
 #define CLOCK_CYCLES_PER_MS 16000
+
+void systick_init(void){
+	NVIC_ST_CTRL_R &= ~NVIC_ST_CTRL_ENABLE;
+	NVIC_ST_RELOAD_R = NVIC_ST_RELOAD_M;
+	NVIC_ST_CURRENT_R = NVIC_ST_CURRENT_S;
+	NVIC_ST_CTRL_R |= (NVIC_ST_CTRL_CLK_SRC | NVIC_ST_CTRL_ENABLE);
+}
+
+
+
+void motor_rotateClockwise(void){
+int j;
+	for( j=0 ; j<4 ; j++ )
+	{
+		GPIO_PORTD_DATA_R =0x03;
+		delay(10);
+		GPIO_PORTD_DATA_R =0x6;
+		delay(10);
+		GPIO_PORTD_DATA_R =0x0c;
+		delay(10);
+		GPIO_PORTD_DATA_R =0x09;
+		delay(10);
+		
+	}
+
+}
+
+
+
+void delay(uint32_t time){
+	uint32_t i;
+	for(i = 0;i < time;i++){
+		systick_waitMS();
+	}
+}
+
+
+
+
+
+
 
 void systick_waitMS(void){
 	NVIC_ST_RELOAD_R = CLOCK_CYCLES_PER_MS - 1;
@@ -28,10 +67,7 @@ void systick_waitMS(void){
 void motor_init(void)
 {
   Port_Init(3);
-	Port_Init(5);
 	Port_SetPinDirection(3 , 0x0F , PORT_PIN_OUT);
-	Port_SetPinDirection(5 , 0x11 , PORT_PIN_IN);
-	Port_SetPinPullUp( 5 , 0x11 ,1);
 	
 }
 
@@ -41,7 +77,7 @@ void motor_rotateAnticlockwise(void)
 {
 	int i; 
 	
-for(i=0;i<10;i++)
+for(i=0;i<4;i++)
 	{
 		GPIO_PORTD_DATA_R =0x09;
 		delay(10);
@@ -54,4 +90,5 @@ for(i=0;i<10;i++)
 		
 	}
 }
+
 

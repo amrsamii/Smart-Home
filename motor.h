@@ -1,10 +1,17 @@
-#ifndef __MOTOR2_H__
-#define __MOTOR2_H__
 
+#ifndef __MOTOR_H__
+#define __MOTOR_H__
 
-
+#include "port.h"
+#include "stdint.h"
+#include "micro_config.h"
+void delay(uint32_t time);
+void motor_rotateClockwise();
+void systick_init(void);
 void motor_init(void);
 void  motor_rotateAnticlockwise(void);
 void systick_waitMS(void);
 
-#endif // __MOTOR2H__
+
+#endif // __MOTOR_H__
+
